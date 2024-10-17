@@ -1,0 +1,100 @@
+/* Reset some default margins and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    line-height: 1.6;
+    overflow-x: hidden; /* Prevents horizontal scroll on the body */
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow-x: hidden; /* Prevents content overflow within the container */
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label, input, button {
+    margin-bottom: 10px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#response {
+    margin-top: 20px;
+    max-width: 100%; /* Ensure the response doesn’t exceed container width */
+    word-wrap: break-word; /* Break long words to prevent overflow */
+    overflow-x: auto; /* Allow horizontal scroll if necessary */
+}
+
+#responseText {
+    white-space: pre-wrap; /* This ensures the JSON response wraps correctly */
+    word-wrap: break-word; /* Break long words in the JSON text */
+}
+
+.spinner {
+    border: 8px solid #f3f3f3; /* Light grey */
+    border-top: 8px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+    display: block;
+}
+
+/* Spinner Animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#errorMessage {
+    color: red;
+    margin-top: 10px;
+}
+
+
+
+p {
+    font-family: Arial, sans-serif; /* Set the font family */
+    font-size: 16px; /* Set the font size */
+    line-height: 1.6; /* Set line spacing for readability */
+    color: #333; /* Set the text color */
+    margin: 20px 0; /* Add space above and below the paragraph */
+    text-align: justify; /* Justify the paragraph text */
+    padding: 10px; /* Add padding around the paragraph */
+    background-color: #f9f9f9; /* Light background color */
+    border-left: 4px solid #007BFF; /* Left border for emphasis */
+    border-radius: 5px; /* Rounded corners */
+}

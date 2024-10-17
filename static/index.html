@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOON BOT</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+
+            <h1>MOON BOT</h1>
+            <form id="healthForm">
+                <label for="condition">Enter a health condition:</label>
+                <input type="text" id="condition" name="condition" required>
+                <button type="submit">Get Info</button>
+            </form>
+
+            <div id="response">
+                <div id="responseText"></div> <!-- Changed from <pre> to <div> to handle rich HTML -->
+            </div>
+            <div id="errorMessage" style="color:red;"></div>
+            <div id="spinner" class="spinner" style="display:none;">Loading...</div>
+
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('healthForm').addEventListener('submit', function(event) {
+            event.preventDefault();  // Prevent form submission from reloading the page
+
+            const condition = document.getElementById('condition').value;
+
+            if (!condition) {
+                document.getElementById('errorMessage').textContent = "Please enter a condition.";
+                return;
+            }
+
+            document.getElementById('spinner').style.display = 'block';
+
+            const apiUrl = `http://127.0.0.1:8000/health-info/?condition=${encodeURIComponent(condition)}`;
+
+            document.getElementById('responseText').innerHTML = '';  // Clear previous response
+            document.getElementById('errorMessage').textContent = '';  // Clear previous error
+
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('spinner').style.display = 'none';
+
+                    // Convert markdown-like text into basic HTML manually
+                    let formattedText = data.info
+                        .replace(/#/g, " ")
+                        .replace(/---/g, " ")
+                        .replace(/### (.*?)\n/g, '<h3>$1</h3>') // Replace ### with <h3>
+                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Replace ** with <strong>
+                        .replace(/- (.*?)\n/g, '<li>$1</li>') // Replace - with <li>
+                        .replace(/\n/g, '<br>'); // Replace new lines with <br>
+
+                    // Wrap list items with <ul>
+                    formattedText = formattedText.replace(/<li>(.*?)<\/li>/g, '<ul><li>$1</li></ul>');
+
+                    // Display the formatted content as HTML
+                    document.getElementById('responseText').innerHTML = formattedText;
+                })
+                .catch(error => {
+                    document.getElementById('spinner').style.display = 'none';
+                    document.getElementById('errorMessage').textContent = `Error fetching health information: ${error.message}`;
+                });
+        });
+    </script>
+</body>
+</html>
